@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using LibraryApi.Domain;
+using LibraryApi.Mappers;
 using LibraryApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +33,9 @@ namespace LibraryApi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddTransient<IGenerateEmployeeIds, EmployeeIdGenerator>();
+            services.AddScoped<IMapBooks, EfSqlBookMapper>();
             services.AddControllers();
             services.AddDbContext<LibraryDataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryDatabase"))
